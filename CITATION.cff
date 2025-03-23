@@ -1,0 +1,28 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Formalization of Social Influences on Estimation Tasks
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Thomas Wolfgang
+    family-names: Menzel
+    email: thomas.menzel@campus.lmu.de
+    affiliation: Ludwig-Maximilians Universität München
+    orcid: 'https://orcid.org/0009-0005-0460-2249'
+  - given-names: Simeon
+    family-names: Kovac
+    email: simeon.kovac@campus.lmu.de
+    affiliation: Ludwig-Maximilians Universität München
+  - given-names: Benedikt
+    family-names: Ehrenwirth
+    email: b.ehrenwirth@campus.lmu.de
+    affiliation: Ludwig-Maximilians Universität München
+repository-code: 'https://github.com/th8m0z/social_influence_formalization'
+license: CC-BY-4.0
+commit: 0f4a6c7b38199db919187dc3fa0df9ff238c6673
+version: 1.0.0
+date-released: '2025-03-23'
