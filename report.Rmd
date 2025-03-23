@@ -162,7 +162,7 @@ knitr::include_graphics("photos/weight_on_advice.png")
 ```
 
 ## Do groups become more accurate after social influence?
-Social influence does not improve the already accurate group mean, the averages of first and second estimates are extremely close. Our results do show that both simple and Dunning-Kruger confidence calculations lead to individual accuracy improvements, with the Dunning-Kruger effect significantly reducing benefits from social influence.
+Social influence does not improve the already accurate group mean, the averages of first and second estimates are extremely close. Our results do show that both simple and Dunning-Kruger confidence calculations lead to individual accuracy improvements, with the Dunning-Kruger effect significantly reducing benefits from social influence. Additionally, individual estimates always improve through social influence across all simulated trials.
 
 ```{r, echo = FALSE, include = TRUE, fig.pos="H"}
 knitr::include_graphics("photos/accuracy_improvement.png")

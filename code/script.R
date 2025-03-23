@@ -1,7 +1,26 @@
-# Set seed for reproducibility
+#' Set seed for reproducibility
 set.seed(40)
 
-# Distribution of Prior Knowledge
+#' Generate distribution of prior knowledge for a group of individuals
+#'
+#' @description Generates a vector of prior knowledge values for a group of individuals
+#' based on the specified distribution type and parameters.
+#'
+#' @param n_individuals Integer. Number of individuals to generate prior knowledge for.
+#' @param distribution_type Character. Type of distribution to use: "uniform", "normal", "truncnorm", "beta", or "bimodal".
+#' @param params List. Parameters specific to the chosen distribution type.
+#'
+#' @return Numeric vector. Values between 0 and 1 representing prior knowledge for each individual.
+#'
+#' @examples
+#' # Generate uniform prior knowledge for 10 individuals
+#' uniform_pk <- dPriorKnowledge(10, "uniform")
+#'
+#' # Generate normal prior knowledge with custom mean and sd
+#' normal_pk <- dPriorKnowledge(10, "normal", list(mean = 0.6, sd = 0.1))
+#'
+#' # Generate beta distribution with custom shape parameters
+#' beta_pk <- dPriorKnowledge(10, "beta", list(alpha = 3, beta = 2))
 dPriorKnowledge <- function(n_individuals, distribution_type = "uniform", params = list()) {
   switch(distribution_type,
          "uniform" = {
@@ -54,6 +73,19 @@ dPriorKnowledge <- function(n_individuals, distribution_type = "uniform", params
   )
 }
 
+#' Calculate confidence based on the Dunning-Kruger effect
+#'
+#' @description Maps prior knowledge to perceived confidence following the Dunning-Kruger effect,
+#' where individuals with low knowledge overestimate their abilities while experts underestimate theirs.
+#'
+#' @param PK Numeric vector. Prior knowledge values between 0 and 1.
+#'
+#' @return Numeric vector. Perceived confidence values adjusted according to the Dunning-Kruger effect.
+#'
+#' @examples
+#' # Generate confidence for a range of prior knowledge values
+#' pk_values <- seq(0, 1, by = 0.1)
+#' dk_conf <- dunning_kruger_confidence(pk_values)
 dunning_kruger_confidence <- function(PK) {
   # Validate input
   if (!is.numeric(PK) || any(PK < 0) || any(PK > 1)) {
@@ -75,7 +107,22 @@ dunning_kruger_confidence <- function(PK) {
   return(perceived_rank)
 }
 
-# Function to calculate confidence based on prior knowledge
+#' Calculate confidence based on prior knowledge
+#'
+#' @description Determines an individual's confidence level based on their prior knowledge.
+#' Can use either a simple linear mapping or the Dunning-Kruger effect.
+#'
+#' @param prior_knowledge Numeric. Prior knowledge value between 0 and 1.
+#' @param dk Logical. Whether to apply the Dunning-Kruger effect. Default is FALSE.
+#'
+#' @return Numeric. Confidence value between 0 and 1.
+#'
+#' @examples
+#' # Simple linear confidence
+#' conf_linear <- calculateConfidence(0.7)
+#'
+#' # Confidence with Dunning-Kruger effect
+#' conf_dk <- calculateConfidence(0.7, dk = TRUE)
 calculateConfidence <- function(prior_knowledge, dk=FALSE) {
   # Simple linear relationship between knowledge and confidence
   if (dk == FALSE) {
@@ -83,10 +130,22 @@ calculateConfidence <- function(prior_knowledge, dk=FALSE) {
   } else {
     return(dunning_kruger_confidence(prior_knowledge))
   }
-
 }
 
-# Distribution of Individual First Estimates
+#' Generate an individual's first estimate based on prior knowledge
+#'
+#' @description Generates a first estimate for an individual based on their prior knowledge level
+#' and the true value. Higher prior knowledge leads to estimates closer to the true value with less variance.
+#'
+#' @param prior_knowledge Numeric. Individual's prior knowledge value between 0 and 1.
+#' @param true_value Numeric. The correct answer to the estimation task.
+#'
+#' @return Numeric. The individual's first estimate.
+#'
+#' @examples
+#' # Generate first estimates for individuals with different knowledge levels
+#' estimate_novice <- dIndividualFirstEstimate(0.2, 100)
+#' estimate_expert <- dIndividualFirstEstimate(0.9, 100)
 dIndividualFirstEstimate <- function(prior_knowledge, true_value) {
   # The higher prior knowledge, the smaller the distribution of individual estimates
   # For maximum prior knowledge = 1, sd_of_log = 0.05
@@ -100,14 +159,41 @@ dIndividualFirstEstimate <- function(prior_knowledge, true_value) {
   return(estimate)
 }
 
-# Distribution of Group First Estimates
+#' Generate first estimates for a group of individuals
+#'
+#' @description Generates first estimates for all individuals in a group based on
+#' their prior knowledge and the true value.
+#'
+#' @param prior_knowledge_vector Numeric vector. Prior knowledge values for each individual.
+#' @param true_value Numeric. The correct answer to the estimation task.
+#'
+#' @return Numeric vector. First estimates for all individuals in the group.
+#'
+#' @examples
+#' # Generate first estimates for a group of 10 individuals
+#' pk_values <- runif(10, 0, 1)
+#' first_estimates <- dGroupFirstEstimate(pk_values, 100)
 dGroupFirstEstimate <- function(prior_knowledge_vector, true_value) {
   # Generate first estimates for all individuals
   first_estimates <- sapply(prior_knowledge_vector, dIndividualFirstEstimate, true_value = true_value)
   return(first_estimates)
 }
 
-# Determine the weight a person puts on advice
+#' Calculate the weight an individual places on advice
+#'
+#' @description Determines how much weight an individual places on advice (social information)
+#' based on their confidence and the distance between their first estimate and the advice.
+#'
+#' @param confidence Numeric. Individual's confidence in their first estimate (0-1).
+#' @param first_estimate Numeric. Individual's first estimate.
+#' @param social_information Numeric. The advice or social information provided.
+#'
+#' @return Numeric. Weight placed on advice, between 0 and 1.
+#'
+#' @examples
+#' # Calculate weight of advice for different scenarios
+#' weight1 <- weightOfAdvice(0.8, 100, 120)  # High confidence, moderate distance
+#' weight2 <- weightOfAdvice(0.3, 100, 200)  # Low confidence, large distance
 weightOfAdvice <- function(confidence, first_estimate, social_information) {
   # Calculate log-based distance
   log_ratio <- log(social_information / first_estimate)
@@ -120,8 +206,20 @@ weightOfAdvice <- function(confidence, first_estimate, social_information) {
   return(weight_of_advice)
 }
 
-
-# Psi function for integrating social information
+#' Calculate expected second estimate based on first estimate and social information
+#'
+#' @description Computes the expected value for an individual's second estimate
+#' by integrating their first estimate with social information, weighted by confidence.
+#'
+#' @param first_estimate Numeric. Individual's first estimate.
+#' @param social_info Numeric. The social information or advice provided.
+#' @param confidence Numeric. Individual's confidence in their first estimate (0-1).
+#'
+#' @return Numeric. Expected value for the individual's second estimate.
+#'
+#' @examples
+#' # Calculate expected second estimate
+#' expected_second <- psi(100, 120, 0.7)
 psi <- function(first_estimate, social_info, confidence) {
   # Weight on advice from confidence and the distance between first estimate and social info
   weight_of_advice <- weightOfAdvice(confidence, first_estimate, social_info)
@@ -135,7 +233,20 @@ psi <- function(first_estimate, social_info, confidence) {
   return(expected_second_estimate)
 }
 
-# Distribution of Individual Second Estimates
+#' Generate an individual's second estimate
+#'
+#' @description Generates a second estimate for an individual after they have received social information,
+#' based on their first estimate, confidence, and the social information.
+#'
+#' @param first_estimate Numeric. Individual's first estimate.
+#' @param social_info Numeric. The social information or advice provided.
+#' @param confidence Numeric. Individual's confidence in their first estimate (0-1).
+#'
+#' @return Numeric. The individual's second estimate.
+#'
+#' @examples
+#' # Generate a second estimate
+#' second_est <- dIndividualSecondEstimate(100, 120, 0.7)
 dIndividualSecondEstimate <- function(first_estimate, social_info, confidence) {
   # Returns the second estimate after applying the Psi function and random noise
   expected_second_estimate <- psi(first_estimate, social_info, confidence)
@@ -143,7 +254,22 @@ dIndividualSecondEstimate <- function(first_estimate, social_info, confidence) {
   return(second_estimate)
 }
 
-# Distribution of Group Second Estimates
+#' Generate second estimates for a group of individuals
+#'
+#' @description Generates second estimates for all individuals in a group after
+#' they have received social information.
+#'
+#' @param first_estimate_vector Numeric vector. First estimates for each individual.
+#' @param social_info Numeric. The social information or advice provided to all individuals.
+#' @param confidence_vector Numeric vector. Confidence values for each individual.
+#'
+#' @return Numeric vector. Second estimates for all individuals in the group.
+#'
+#' @examples
+#' # Generate second estimates for a group
+#' first_ests <- c(90, 110, 105, 95)
+#' conf_vals <- c(0.7, 0.8, 0.6, 0.9)
+#' second_ests <- dGroupSecondEstimates(first_ests, 100, conf_vals)
 dGroupSecondEstimates <- function(first_estimate_vector, social_info, confidence_vector) {
   # Generate second estimates for all individuals
   second_estimates <- mapply(dIndividualSecondEstimate,
@@ -153,7 +279,23 @@ dGroupSecondEstimates <- function(first_estimate_vector, social_info, confidence
   return(second_estimates)
 }
 
-# Function to determine WOC with social influence
+#' Determine Wisdom of Crowds effects with social influence
+#'
+#' @description Calculates various metrics to evaluate the impact of social influence 
+#' on group estimation accuracy and Wisdom of Crowds effects.
+#'
+#' @param first_estimate_vector Numeric vector. First estimates for each individual.
+#' @param second_estimate_vector Numeric vector. Second estimates for each individual.
+#' @param true_value Numeric. The correct answer to the estimation task.
+#'
+#' @return List. Contains multiple metrics comparing the accuracy of first and second estimates
+#' at both individual and group levels, including Wisdom of Crowds benefits.
+#'
+#' @examples
+#' # Evaluate WOC effects
+#' first_ests <- c(90, 110, 105, 95)
+#' second_ests <- c(95, 105, 102, 96)
+#' woc_effects <- determineWOCSocialInfluence(first_ests, second_ests, 100)
 determineWOCSocialInfluence <- function(first_estimate_vector, second_estimate_vector, true_value) {
   # Calculate mean estimates
   mean_first <- mean(first_estimate_vector)
@@ -220,9 +362,33 @@ determineWOCSocialInfluence <- function(first_estimate_vector, second_estimate_v
   ))
 }
 
-# Function to run a simulation
-runSimulation <- function(n_individuals, true_value, knowledge_distribution = "uniform", 
-                          knowledge_params = list(), social_info_type = "mean", 
+#' Run a simulation of group estimation with social influence
+#'
+#' @description Runs a complete simulation of group estimation with social influence,
+#' generating prior knowledge, confidence, first estimates, social information, and second
+#' estimates for a group of individuals over multiple trials.
+#'
+#' @param n_individuals Integer. Number of individuals in the group.
+#' @param true_value Numeric. The correct answer to the estimation task.
+#' @param knowledge_distribution Character. Type of distribution for prior knowledge. Default is "uniform".
+#' @param knowledge_params List. Parameters for the prior knowledge distribution. Default is empty list.
+#' @param social_info_type Character. Method for calculating social information: "mean", "median", or "trimmed_mean". Default is "mean".
+#' @param manipulated_social_info Numeric. If provided, uses this fixed value as social information for all individuals. Default is NULL.
+#' @param n_trials Integer. Number of simulation trials to run. Default is 1.
+#' @param dk Logical. Whether to apply the Dunning-Kruger effect. Default is FALSE.
+#'
+#' @return List or list of lists. For a single trial, returns detailed results. For multiple trials,
+#' returns both individual trial results and aggregated statistics.
+#'
+#' @examples
+#' # Run a single simulation trial
+#' sim_result <- runSimulation(n_individuals = 50, true_value = 100)
+#'
+#' # Run multiple trials with Dunning-Kruger effect
+#' multi_sim <- runSimulation(n_individuals = 100, true_value = 100, 
+#'                            knowledge_distribution = "normal", n_trials = 10, dk = TRUE)
+runSimulation <- function(n_individuals, true_value, knowledge_distribution = "uniform",
+                          knowledge_params = list(), social_info_type = "mean",
                           manipulated_social_info = NULL, n_trials = 1, dk=FALSE) {
   
   results <- list()
@@ -333,15 +499,12 @@ runSimulation <- function(n_individuals, true_value, knowledge_distribution = "u
   }
 }
 
-
 normal_results <- runSimulation(
   n_individuals = 100,
   true_value = 100,
   knowledge_distribution = "truncnorm",
   social_info_type = "mean",
   n_trials = 100,
-  dk = TRUE
-)
-
+  dk = TRUE)
 normal_results$aggregate_results
 

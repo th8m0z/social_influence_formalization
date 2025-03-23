@@ -295,17 +295,14 @@ By including the Dunning-Kruger effect, we effectively water down the strong cor
 \section{Formal Model Development}\label{formal-model-development}}
 
 All code and materials have been uploaded to the following repository:
-
 In developing our formal model we made multiple simplifications and also deviated from the theory.
-
-The model uses a deterministic function combining confidence and distance between estimates, whereas actual human weight assignment includes additional factors like advisor characteristics {[}WOA3, WOA4{]} and social dynamics not captured here.
-
-Furthermore, some authors report a reactance effect when individuals notice a high distance between their estimate and received advice. We limited ourselves to not modeling this and assumed that the higher the distance between our initial estimate and the social information, the more people will move towards the advice, due to fear of being totally wrong.
+The model uses a deterministic function combining confidence and distance between estimates, whereas actual human weight assignment includes additional factors like advisor characteristics {[}WOA3, WOA4{]} and social dynamics not captured here {[}WOA7{]}.
+Furthermore, some authors report a reactance effect when individuals notice a high distance between their estimate and received advice {[}D6{]}. We limited ourselves to not modeling this and assumed that the higher the distance between our initial estimate and the social information, the more people will move towards the advice, due to fear of being totally wrong {[}D2, D4{]}.
 
 \hypertarget{prior-knowledge-to-confidence}{%
 \subsection{Prior Knowledge to Confidence}\label{prior-knowledge-to-confidence}}
 
-In our basic modeling of confidence, we assumed that CONF = PK. In reality CONF would most likely also follow a distribution across intra-individual ``samplings'' of it, while also being influenced by different personality tendencies {[}WOA7{]}. Additionally, in our Dunning-Kruger extension, we pegged the mapping to trace the percentile over- and underestimations found in the initial Dunning-Kruger paper, based on truncated normal distribution of prior knowledge, with mean=0.5 and SD=0.15. We made sure to identify which percentiles correspond to which levels of prior knowledge (for example percentile=0.12 \textless-\textgreater{} PK=0.324), but we did not make it dynamically adapt to different kinds of prior knowledge distributions.
+In our basic modeling of confidence, we assumed that CONF = PK {[}CONF3{]}. In reality CONF would most likely also follow a distribution across intra-individual ``samplings'' of it, while also being influenced by different personality tendencies {[}WOA7{]}. Additionally, in our Dunning-Kruger extension, we pegged the mapping to trace the percentile over- and underestimations found in the initial Dunning-Kruger paper {[}DK1, DK2, DK3{]}, based on truncated normal distribution of prior knowledge, with mean=0.5 and SD=0.15. We made sure to identify which percentiles correspond to which levels of prior knowledge (for example percentile=0.12 \textless-\textgreater{} PK=0.324), but we did not make it dynamically adapt to different kinds of prior knowledge distributions.
 
 \begin{figure}[H]
 \includegraphics[width=5.59in]{photos/dk} \caption{ }\label{fig:unnamed-chunk-2}
@@ -314,7 +311,7 @@ In our basic modeling of confidence, we assumed that CONF = PK. In reality CONF 
 \hypertarget{weight-of-advice}{%
 \subsection{Weight of Advice}\label{weight-of-advice}}
 
-This function determines how much individuals are influenced by advice based on their confidence and the distance between their first estimate and social information. It calculates a log-based distance measure, then adjusts the weight using confidence values and a tanh transformation. Higher confidence decreases the weight given to advice, while larger distances (with tanh transformation) can increase it. The result is constrained between 0 and 1.
+This function determines how much individuals are influenced by advice based on their confidence and the distance between their first estimate and social information {[}WOA1, WOA2{]}. It calculates a log-based distance measure, then adjusts the weight using confidence values {[}CONF1, CONF2{]} and a tanh transformation. Higher confidence decreases the weight given to advice {[}REV4, REV5{]}, while larger distances (with tanh transformation) can increase it {[}D2, D4{]}. The result is constrained between 0 and 1.
 
 \begin{figure}[H]
 \includegraphics[width=5.36in]{photos/woa} \caption{ }\label{fig:unnamed-chunk-3}
@@ -328,7 +325,7 @@ Psi integrates social information with an individual's first estimate to determi
 \hypertarget{prior-knowledge-to-first-estimate}{%
 \subsection{Prior Knowledge to First Estimate}\label{prior-knowledge-to-first-estimate}}
 
-The relationship is logarithmic - higher prior knowledge leads to more accurate estimates with less variance. Specifically, estimation error standard deviation decreases linearly with prior knowledge. Estimates are drawn from a lognormal distribution centered around the true value, with the spread determined by the individual's prior knowledge.
+The relationship is logarithmic - higher prior knowledge leads to more accurate estimates with less variance {[}PK3, FE1, FE2{]}. Specifically, estimation error standard deviation decreases linearly with prior knowledge. Estimates are drawn from a lognormal distribution centered around the true value, with the spread determined by the individual's prior knowledge.
 
 \begin{figure}[H]
 \includegraphics[width=4.56in]{photos/pk_estimate} \caption{ }\label{fig:unnamed-chunk-4}
@@ -351,7 +348,7 @@ Our results indicate that our basic model, with a direct mapping of PK to CONF, 
 \hypertarget{do-groups-become-more-accurate-after-social-influence}{%
 \subsection{Do groups become more accurate after social influence?}\label{do-groups-become-more-accurate-after-social-influence}}
 
-Social influence does not improve the already accurate group mean, the averages of first and second estimates are extremely close. Our results do show that both simple and Dunning-Kruger confidence calculations lead to individual accuracy improvements, with the Dunning-Kruger effect significantly reducing benefits from social influence.
+Social influence does not improve the already accurate group mean, the averages of first and second estimates are extremely close. Our results do show that both simple and Dunning-Kruger confidence calculations lead to individual accuracy improvements, with the Dunning-Kruger effect significantly reducing benefits from social influence. Additionally, individual estimates always improve through social influence across all simulated trials.
 
 \begin{figure}[H]
 \includegraphics[width=7in]{photos/accuracy_improvement} \caption{ }\label{fig:unnamed-chunk-6}
