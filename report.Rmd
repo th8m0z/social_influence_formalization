@@ -125,21 +125,19 @@ By including the Dunning-Kruger effect, we effectively water down the strong cor
 
 # Formal Model Development
 All code and materials have been uploaded to the following repository:
-
 In developing our formal model we made multiple simplifications and also deviated from the theory.
+The model uses a deterministic function combining confidence and distance between estimates, whereas actual human weight assignment includes additional factors like advisor characteristics [WOA3, WOA4] and social dynamics not captured here [WOA7].
+Furthermore, some authors report a reactance effect when individuals notice a high distance between their estimate and received advice [D6]. We limited ourselves to not modeling this and assumed that the higher the distance between our initial estimate and the social information, the more people will move towards the advice, due to fear of being totally wrong [D2, D4].
 
-The model uses a deterministic function combining confidence and distance between estimates, whereas actual human weight assignment includes additional factors like advisor characteristics [WOA3, WOA4] and social dynamics not captured here.
-
-Furthermore, some authors report a reactance effect when individuals notice a high distance between their estimate and received advice. We limited ourselves to not modeling this and assumed that the higher the distance between our initial estimate and the social information, the more people will move towards the advice, due to fear of being totally wrong.
 
 ## Prior Knowledge to Confidence
-In our basic modeling of confidence, we assumed that CONF = PK. In reality CONF would most likely also follow a distribution across intra-individual "samplings" of it, while also being influenced by different personality tendencies [WOA7]. Additionally, in our Dunning-Kruger extension, we pegged the mapping to trace the percentile over- and underestimations found in the initial Dunning-Kruger paper, based on truncated normal distribution of prior knowledge, with mean=0.5 and SD=0.15. We made sure to identify which percentiles correspond to which levels of prior knowledge (for example percentile=0.12 <-> PK=0.324), but we did not make it dynamically adapt to different kinds of prior knowledge distributions.
+In our basic modeling of confidence, we assumed that CONF = PK [CONF3]. In reality CONF would most likely also follow a distribution across intra-individual "samplings" of it, while also being influenced by different personality tendencies [WOA7]. Additionally, in our Dunning-Kruger extension, we pegged the mapping to trace the percentile over- and underestimations found in the initial Dunning-Kruger paper [DK1, DK2, DK3], based on truncated normal distribution of prior knowledge, with mean=0.5 and SD=0.15. We made sure to identify which percentiles correspond to which levels of prior knowledge (for example percentile=0.12 <-> PK=0.324), but we did not make it dynamically adapt to different kinds of prior knowledge distributions.
 
 ```{r, echo = FALSE, include = TRUE, fig.pos="H"}
 knitr::include_graphics("photos/dk.png")
 ```
 ## Weight of Advice
-This function determines how much individuals are influenced by advice based on their confidence and the distance between their first estimate and social information. It calculates a log-based distance measure, then adjusts the weight using confidence values and a tanh transformation. Higher confidence decreases the weight given to advice, while larger distances (with tanh transformation) can increase it. The result is constrained between 0 and 1.
+This function determines how much individuals are influenced by advice based on their confidence and the distance between their first estimate and social information [WOA1, WOA2]. It calculates a log-based distance measure, then adjusts the weight using confidence values [CONF1, CONF2] and a tanh transformation. Higher confidence decreases the weight given to advice [REV4, REV5], while larger distances (with tanh transformation) can increase it [D2, D4]. The result is constrained between 0 and 1.
 ```{r, echo = FALSE, include = TRUE, fig.pos="H"}
 knitr::include_graphics("photos/woa.png")
 ```
@@ -147,7 +145,7 @@ knitr::include_graphics("photos/woa.png")
 Psi integrates social information with an individual's first estimate to determine the expected second estimate. It uses the Weight of Advice to calculate how much an individual relies on social information versus their own initial judgment. The expected second estimate is a weighted average.
 
 ## Prior Knowledge to First Estimate
-The relationship is logarithmic - higher prior knowledge leads to more accurate estimates with less variance. Specifically, estimation error standard deviation decreases linearly with prior knowledge. Estimates are drawn from a lognormal distribution centered around the true value, with the spread determined by the individual's prior knowledge.
+The relationship is logarithmic - higher prior knowledge leads to more accurate estimates with less variance [PK3, FE1, FE2]. Specifically, estimation error standard deviation decreases linearly with prior knowledge. Estimates are drawn from a lognormal distribution centered around the true value, with the spread determined by the individual's prior knowledge.
 
 ```{r, echo = FALSE, include = TRUE, fig.pos="H"}
 knitr::include_graphics("photos/pk_estimate.png")
