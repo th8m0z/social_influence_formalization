@@ -26,7 +26,7 @@ floatsintext      : yes
 figsintext        : yes
 linenumbers       : no
 draft             : no
-mask              : no
+mask              : yes
 figurelist        : no
 tablelist         : no
 footnotelist      : no
