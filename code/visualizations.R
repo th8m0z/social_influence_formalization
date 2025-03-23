@@ -148,3 +148,91 @@ plot_weight_vs_confidence <- function(distances = c(0.1, 0.5, 1, 2, 5)) {
 
 plot_weight_vs_confidence()
 
+library(ggplot2)
+
+# Create a data frame from the aggregate results
+comparison_data <- data.frame(
+  Metric = c(
+    "Group Distance (First)",
+    "Group Distance (Second)",
+    "Individual Distance (First)",
+    "Individual Distance (Second)",
+    "WOC Benefit (First)",
+    "WOC Benefit (Second)",
+    "WOC Benefit Change",
+    "% WOC Benefit (First)",
+    "% WOC Benefit (Second)",
+    "% WOC Benefit Change",
+    "% Trials Group Improved",
+    "% Trials Individual Improved",
+    "% Trials WOC Strengthened"
+  ),
+  Normal = c(
+    normal_results$aggregate_results$mean_group_distance_first,
+    normal_results$aggregate_results$mean_group_distance_second,
+    normal_results$aggregate_results$mean_individual_distance_first,
+    normal_results$aggregate_results$mean_individual_distance_second,
+    normal_results$aggregate_results$mean_woc_benefit_first,
+    normal_results$aggregate_results$mean_woc_benefit_second,
+    normal_results$aggregate_results$mean_woc_benefit_change,
+    normal_results$aggregate_results$mean_woc_percent_benefit_first,
+    normal_results$aggregate_results$mean_woc_percent_benefit_second,
+    normal_results$aggregate_results$mean_woc_percent_benefit_change,
+    normal_results$aggregate_results$proportion_group_improved * 100,
+    normal_results$aggregate_results$proportion_individual_improved * 100,
+    normal_results$aggregate_results$proportion_woc_strengthened * 100
+  ),
+  DK = c(
+    dk_results$aggregate_results$mean_group_distance_first,
+    dk_results$aggregate_results$mean_group_distance_second,
+    dk_results$aggregate_results$mean_individual_distance_first,
+    dk_results$aggregate_results$mean_individual_distance_second,
+    dk_results$aggregate_results$mean_woc_benefit_first,
+    dk_results$aggregate_results$mean_woc_benefit_second,
+    dk_results$aggregate_results$mean_woc_benefit_change,
+    dk_results$aggregate_results$mean_woc_percent_benefit_first,
+    dk_results$aggregate_results$mean_woc_percent_benefit_second,
+    dk_results$aggregate_results$mean_woc_percent_benefit_change,
+    dk_results$aggregate_results$proportion_group_improved * 100,
+    dk_results$aggregate_results$proportion_individual_improved * 100,
+    dk_results$aggregate_results$proportion_woc_strengthened * 100
+  )
+)
+
+# Format numeric values to 2 decimal places
+comparison_data$Normal <- round(comparison_data$Normal, 2)
+comparison_data$DK <- round(comparison_data$DK, 2)
+
+# Create a difference column to highlight the effect of DK
+comparison_data$Difference <- round(comparison_data$DK - comparison_data$Normal, 2)
+
+# Create a ggplot table visualization
+# Convert to long format for plotting
+library(tidyr)
+plot_data <- pivot_longer(comparison_data, 
+                          cols = c("Normal", "DK", "Difference"),
+                          names_to = "Condition", 
+                          values_to = "Value")
+
+# Create grids and text for table
+p <- ggplot(plot_data, aes(x = Condition, y = reorder(Metric, desc(row.names(comparison_data))))) +
+  geom_tile(fill = "white", color = "black") +
+  geom_text(aes(label = Value), size = 3) +
+  labs(title = "Comparison of Normal vs. Dunning-Kruger Results",
+       x = "", y = "") +
+  theme_minimal() +
+  theme(
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white", color = NA),
+    panel.grid = element_blank(),
+    axis.text.y = element_text(hjust = 1, size = 8),
+    axis.text.x = element_text(size = 10, face = "bold"),
+    plot.title = element_text(hjust = 0.5, size = 14)
+  )
+
+# Save the plot as a PNG file with white background
+ggsave("results_comparison.png", p, width = 8, height = 10, dpi = 300, bg = "white")
+
+cat("Table image saved as 'results_comparison.png'\n")
+
+

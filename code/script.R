@@ -505,6 +505,16 @@ normal_results <- runSimulation(
   knowledge_distribution = "truncnorm",
   social_info_type = "mean",
   n_trials = 100,
+  dk = FALSE)
+
+dk_results <- runSimulation(
+  n_individuals = 100,
+  true_value = 100,
+  knowledge_distribution = "truncnorm",
+  social_info_type = "mean",
+  n_trials = 100,
   dk = TRUE)
-normal_results$aggregate_results
+
+
+
 
