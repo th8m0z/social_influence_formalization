@@ -1,0 +1,469 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  man,floatsintext]{apa6}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{english}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+% Manuscript styling
+\usepackage{upgreek}
+\captionsetup{font=singlespacing,justification=justified}
+
+% Table formatting
+\usepackage{longtable}
+\usepackage{lscape}
+% \usepackage[counterclockwise]{rotating}   % Landscape page setup for large tables
+\usepackage{multirow}		% Table styling
+\usepackage{tabularx}		% Control Column width
+\usepackage[flushleft]{threeparttable}	% Allows for three part tables with a specified notes section
+\usepackage{threeparttablex}            % Lets threeparttable work with longtable
+
+% Create new environments so endfloat can handle them
+% \newenvironment{ltable}
+%   {\begin{landscape}\centering\begin{threeparttable}}
+%   {\end{threeparttable}\end{landscape}}
+\newenvironment{lltable}{\begin{landscape}\centering\begin{ThreePartTable}}{\end{ThreePartTable}\end{landscape}}
+
+% Enables adjusting longtable caption width to table width
+% Solution found at http://golatex.de/longtable-mit-caption-so-breit-wie-die-tabelle-t15767.html
+\makeatletter
+\newcommand\LastLTentrywidth{1em}
+\newlength\longtablewidth
+\setlength{\longtablewidth}{1in}
+\newcommand{\getlongtablewidth}{\begingroup \ifcsname LT@\roman{LT@tables}\endcsname \global\longtablewidth=0pt \renewcommand{\LT@entry}[2]{\global\advance\longtablewidth by ##2\relax\gdef\LastLTentrywidth{##2}}\@nameuse{LT@\roman{LT@tables}} \fi \endgroup}
+
+% \setlength{\parindent}{0.5in}
+% \setlength{\parskip}{0pt plus 0pt minus 0pt}
+
+% Overwrite redefinition of paragraph and subparagraph by the default LaTeX template
+% See https://github.com/crsh/papaja/issues/292
+\makeatletter
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
+  {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries\itshape\typesectitle}}
+
+\renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
+  {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+  {-\z@\relax}%
+  {\normalfont\normalsize\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
+\makeatother
+
+\makeatletter
+\usepackage{etoolbox}
+\patchcmd{\maketitle}
+  {\section{\normalfont\normalsize\abstractname}}
+  {\section*{\normalfont\normalsize\abstractname}}
+  {}{\typeout{Failed to patch abstract.}}
+\patchcmd{\maketitle}
+  {\section{\protect\normalfont{\@title}}}
+  {\section*{\protect\normalfont{\@title}}}
+  {}{\typeout{Failed to patch title.}}
+\makeatother
+
+\usepackage{xpatch}
+\makeatletter
+\xapptocmd\appendix
+  {\xapptocmd\section
+    {\addcontentsline{toc}{section}{\appendixname\ifoneappendix\else~\theappendix\fi: #1}}
+    {}{\InnerPatchFailed}%
+  }
+{}{\PatchFailed}
+\makeatother
+\usepackage{csquotes}
+\usepackage{pdfpages}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Formalization of Social Influences on Estimation Tasks},
+  pdfauthor={Thomas Menzel1},
+  pdflang={en-EN},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Formalization of Social Influences on Estimation Tasks}
+\author{Thomas Menzel\textsuperscript{1}}
+\date{}
+
+
+\shorttitle{Social Influences on Estimation Tasks}
+
+\authornote{
+
+23.03.2025, 12586688, {[}w24/25{]} Empirisch-psychologisches Praktikum II: Formale Modellierung von Theorien (F. Schönbrodt)
+
+The authors made the following contributions. Thomas Menzel: Conceptualization, Writing - Original Draft Preparation, Writing - Review \& Editing.
+
+Correspondence concerning this article should be addressed to Thomas Menzel, Wollgrasstr. 16, 33154 Salzkotten. E-mail: \href{mailto:thomas.menzel@campus.lmu.de}{\nolinkurl{thomas.menzel@campus.lmu.de}}
+
+}
+
+\affiliation{\vspace{0.5cm}\textsuperscript{1} Ludwig-Maximilians Universität München}
+
+\begin{document}
+\maketitle
+
+\hypertarget{objective}{%
+\section{Objective}\label{objective}}
+
+This report aims to formalize theoretical assumptions regarding the effects of social influence on group accuracy and wisdom of crowds potency within the Judge-Advisor System (JAS) paradigm. Additionally, we will examine how varying degrees of the Dunning-Kruger effect (where individuals with low expertise overestimate their abilities while those with high expertise underestimate theirs) might impact these dynamics.
+
+\hypertarget{verbal-introduction}{%
+\section{Verbal Introduction}\label{verbal-introduction}}
+
+The wisdom of crowds effect, first observed by Galton in 1907, refers to the phenomenon where the aggregation of independent individual judgments can produce estimates that are more accurate than most individual judgments (Jayles et al., 2017). This effect has been widely documented across various domains, including prediction markets, political forecasting, and general knowledge estimation tasks (Surowiecki, 2004). Central to the effect is the notion that cognitive diversity among individuals leads to error cancellation when estimates are aggregated (Rader, Larrick, \& Soll, 2017).
+
+The judge-advisor system (JAS) paradigm offers a structured approach to studying how individuals incorporate advice into their decision-making (Sniezek \& Buckley, 1995). In this paradigm, participants (judges) provide an initial estimate, receive advice (typically in the form of estimates from others), and then have the opportunity to revise their original estimate. This experimental design allows researchers to quantify the extent to which people incorporate others' input. This process is fundamental to many real-world scenarios, from professional consultations to everyday social interactions (Bailey, Leon, Ebner, Moustafa, \& Weidemann, 2023).
+
+While traditional wisdom of crowds theory emphasizes the importance of fully independent judgments for maximizing collective accuracy (Lorenz, Rauhut, Schweitzer, \& Helbing, 2011), recent evidence suggests that under certain conditions, social influence may actually improve group estimation accuracy (Jayles et al., 2017). It is hypothesized that this is the case, because subjects can use the power of the Wisdom of Crowds by adjusting 50\% towards whatever advice they receive (Bailey et al., 2023). In practice, they adjust by only 0.39, thereby weighing their own opinion more highly (egocentric discounting) (Bailey et al., 2023).
+
+\hypertarget{relevant-phenomena}{%
+\section{Relevant Phenomena}\label{relevant-phenomena}}
+
+Studies have found that within the JAS paradigm, the accuracy of individual estimates and aggregated group estimates is higher after subjects have received advice, than for their first, fully independent guesses. Subjects tend to integrate the estimate received as advice into their second guess, moving toward it.
+
+The analysis of strength of evidence as well as generalizability for this phenomenon heavily depend on which studies we include during our limited search. Most importantly, it depends on whether we regard the meta-analysis of Baileys et al.~as representative of our phenomenon. In their work, they find the robust effect, that people move towards the advice they receive in their second estimates, but they also state that they did not include whether this move resulted in increased or decreased accuracy, due to concerns of having to exclude too many studies from their dataset. Because of this lack of accuracy measurements, we exclude their paper from our evaluation.
+
+\hypertarget{strength-of-evidence}{%
+\subsection{Strength of Evidence}\label{strength-of-evidence}}
+
+The phenomenon of improved estimation accuracy after receiving advice shows moderate evidence across multiple studies. The evidence strength is supported by methodologically sound experimental designs with standardized protocols, controlled variables, and adequate sample sizes (for example 520 participants in Becker, 279 in Gürçay). All studies except for (Lorenz et al., 2011) demonstrate statistical significance for the basic effect of accuracy improvements. In a re-analysis of their data, Gürçay et al.~later do find an effect with different outcome measurements. According to Becker, Brackbill, and Centola (2017), decentralized networks lead accuracy improvements, while results for centralized networks are mixed.
+
+\hypertarget{utos}{%
+\subsection{UTOS}\label{utos}}
+
+For Units, evidence comes primarily from university students in WEIRD countries, limiting generalizability. Treatment variations show consistency across different forms of social information (statistical feedback, peer estimates, network influence, and confidence information), with effects persisting across these variations. Even group discussions yielded a positive effect (Gürçay, Mellers, \& Baron, 2015). Based on this sample of studies, Treatments seem to be relatively generalizable.
+
+Outcome measurements vary (mean absolute error, percentage deviation, log-transformed differences), yet capture improvement in accuracy post-advice, except in the case of (Lorenz et al., 2011). The fact that (Gürçay et al., 2015) can simply identify an effect in the data of Lorenz et al. (2011) due to different measurements and analyses indicates limited generalizability across outcomes.
+
+Settings have been tested across different countries (France, Japan) (Jayles et al., 2017) and modalities (digital platforms, laboratory environments), though primarily in controlled experimental contexts rather than naturalistic settings. In general, we conclude a low generalizability across settings.
+
+The phenomenon can be considered low to moderately robust. It demonstrates consistency across different operationalizations of treatments in controlled settings, however, its robustness is limited by homogeneous sampling, artificial interaction paradigms, and lack of evidence from naturalistic environments where more complex social dynamics might influence the effect.
+
+\hypertarget{core-constructs}{%
+\section{Core Constructs}\label{core-constructs}}
+
+The theory explains how individuals incorporate social information into their estimates. The key paradigm (JAS) involves individuals making an initial estimate (First Estimate), receiving social information from others, and then producing a revised estimate (Second Estimate).
+
+\begin{itemize}
+\item
+  Prior Knowledge (PK) represents an individual's expertise regarding the estimation task, ranging from 0 (no knowledge) to 1 (expert) {[}PK1, PK2{]}. The distribution of this knowledge across a group (GPK) follows a truncated normal distribution {[}PK1, PK2, PK3{]}.
+\item
+  Confidence (CONF) reflects an individual's trust in their own estimate and is directly determined by their prior knowledge {[}CONF1, CONF2, CONF3{]}. It is on a scale of 0 to 1, where 0 means they don't believe in their estimate at all and 1 means they are fully confident in its accuracy. We used a simplification and set CONF = PK in our base model, because they closely related (Jayles et al., 2017).
+\item
+  First Estimates (IFE) follow a lognormal distribution where the variance decreases with higher prior knowledge {[}FE1, FE2{]}. More knowledgeable individuals produce less variable estimates closer to the true value {[}PK3{]}.
+\item
+  Social Information (SI) is calculated as the mean of other group members' first estimates {[}SINFO1{]}.
+\item
+  Weight on Advice (WOA) is the central mechanism determining how individuals combine their first estimate with social information {[}WOA1, WOA2, WOA3, WOA4{]}. WOA is influenced by:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    An individual's confidence in their first estimate {[}CONF1, CONF2{]}
+  \item
+    The perceived distance between their estimate and the social information {[}D1, D2, D4, D5{]}
+  \end{itemize}
+\item
+  Second Estimates (ISE) are calculated as a weighted average of an individual's first estimate and the social information {[}WOA1-WOA7{]}.
+\item
+  Collective Accuracy (ACC) measures how close the group's estimates are to the true value, calculated as the mean absolute deviation from the true value.
+\end{itemize}
+
+Even though not explicitly mentioned in our VAST Model, we also aim to investigate the Wisdom of Crowds effect, as well as the tendency for egocentric discounting, meaning the phenomenon that individuals tend to have a WOA \textless{} 0.5, meaning they value their own estimate more highly than the social information of the group {[}EGO1, EGO2{]}. We aim to test in our simulations, whether and under what circumstances WOC and Egocentric Discounting can be shown to exist.
+
+For our extension, we incorporate the Dunning-Kruger effect into our confidence calculation, based on the initial paper from 1999. We interpret the Dunning-Kruger Effect to mean novices being significantly more confident in their knowledge than would be reasonable for them, while experts are less confident than would be reasonable for them {[}DK1, DK2{]}. Dunning \& Kruger posit, that this happens, because low-knowledge subjects also lack the metacognitive skills to realize their lack of skill {[}DK3{]}.
+
+\hypertarget{vast-display}{%
+\subsection{VAST Display}\label{vast-display}}
+
+In our VAST display we tried to separate between the overall paradigm and the theoretical model according to which changes in accuracy occur.
+
+\begin{figure}[H]
+\includegraphics[width=0.9\linewidth]{VAST_Image} \caption{ }\label{fig:unnamed-chunk-1}
+\end{figure}
+
+\hypertarget{theory-formulation}{%
+\section{Theory Formulation}\label{theory-formulation}}
+
+Our model starts with a group of subjects, who each have a different prior knowledge with regards to the estimation task {[}PK2{]}. Those with higher prior knowledge have more accurate first estimates and will be more confident in them, whereas those with lower prior knowledge will have less accurate ones, while being less confident. The core of our theory lies within the revision coefficient (Becker et al., 2017). Confidence and prior knowledge should be highly correlated (without the Dunning-Kruger effect), so accurate individuals will not be moved much by potentially inaccurate social information, while less knowledgeable individuals shift more toward advice. As long as this is the case, we should find improvements in group accuracy.
+
+This mechanism is modeled via our calculation of Weight of Advice, which determines by what percentage subjects move towards the advice they received from their initial estimate. Highly confident individuals will generally stay close to their initial estimate, whereas those with low confidence will weight advice more highly. A second factor is distance between what people's first estimate was and what advice they are receiving. Low distance leads to a decreased weight of advice (Rader et al., 2017), whereas high distance makes people doubt their first estimate more.
+
+We then calculate the accuracy for both first estimates and second estimates in order to determine 1. whether the groups second estimates are more accurate (closer to the true value) than their first estimates and 2. how strong a potential Wisdom of Crowds effect is.
+
+Because individuals do move toward social information, their estimation diversity decreases (Lorenz et al., 2011). This should in theory also diminish the potency of the Wisdom of Crowds effect for second estimates, i.e.~aggregating will lead to less pronounced improvements in comparison to the first estimates.
+
+By including the Dunning-Kruger effect, we effectively water down the strong correlation between prior knowledge and confidence. Those with lower prior knowledge have too much confidence given how little knowledge they have, whereas experts are less confident in their judgements than they should be (Kruger \& Dunning, 1999). We predict that for extreme overconfidence of novices and extreme underconfidence of experts, social influence will be detrimental to group accuracy.
+
+\hypertarget{formal-model-development}{%
+\section{Formal Model Development}\label{formal-model-development}}
+
+All code and materials have been uploaded to the \href{https://github.com/th8m0z/social_influence_formalization}{Social Influence Formalization} repository.
+
+In developing our formal model we made multiple simplifications and also deviated from the theory. The model uses a deterministic function combining confidence and distance between estimates, whereas actual human weight assignment includes additional factors like advisor characteristics {[}WOA3, WOA4{]} and social dynamics not captured here {[}WOA7{]}.
+
+Furthermore, some authors report a reactance effect when individuals notice a high distance between their estimate and received advice {[}D6{]}. We limited ourselves to not modeling this and assumed that the higher the distance between our initial estimate and the social information, the more people will move towards the advice, due to fear of being totally wrong {[}D2, D4{]}.
+
+\hypertarget{prior-knowledge-to-confidence}{%
+\subsection{Prior Knowledge to Confidence}\label{prior-knowledge-to-confidence}}
+
+In our basic modeling of confidence, we assumed that CONF = PK {[}CONF3{]}. In reality CONF would most likely also follow a distribution across intra-individual ``samplings'' of it, while also being influenced by different personality tendencies {[}WOA7{]}. Additionally, in our Dunning-Kruger extension, we pegged the mapping to trace the percentile over- and underestimations found in the initial Dunning-Kruger paper {[}DK1, DK2, DK3{]}, based on truncated normal distribution of prior knowledge, with mean=0.5 and SD=0.15. We made sure to identify which percentiles correspond to which levels of prior knowledge (for example percentile=0.12 \textless-\textgreater{} PK=0.324), but we did not make it dynamically adapt to different kinds of prior knowledge distributions.
+
+\begin{figure}[H]
+\includegraphics[width=5.59in]{photos/dk} \caption{ }\label{fig:unnamed-chunk-2}
+\end{figure}
+
+\hypertarget{prior-knowledge-to-first-estimate}{%
+\subsection{Prior Knowledge to First Estimate}\label{prior-knowledge-to-first-estimate}}
+
+The relationship is logarithmic - higher prior knowledge leads to more accurate estimates with less variance {[}PK3, FE1, FE2{]}. Specifically, estimation error standard deviation decreases linearly with prior knowledge. Estimates are drawn from a lognormal distribution centered around the true value, with the spread determined by the individual's prior knowledge.
+
+\begin{figure}[H]
+\includegraphics[width=4.56in]{photos/pk_estimate} \caption{ }\label{fig:unnamed-chunk-3}
+\end{figure}
+
+\hypertarget{weight-of-advice}{%
+\subsection{Weight of Advice}\label{weight-of-advice}}
+
+This function determines how much individuals are influenced by advice based on their confidence and the distance between their first estimate and social information {[}WOA1, WOA2{]}. It calculates a log-based distance measure, then adjusts the weight using confidence values {[}CONF1, CONF2{]} and a tanh transformation. Higher confidence decreases the weight given to advice {[}REV4, REV5{]}, while larger distances (with tanh transformation) can increase it {[}D2, D4{]}. The result is constrained between 0 and 1.
+
+\begin{figure}[H]
+\includegraphics[width=5.36in]{photos/woa} \caption{ }\label{fig:unnamed-chunk-4}
+\end{figure}
+
+\hypertarget{psi}{%
+\subsection{Psi}\label{psi}}
+
+Psi integrates social information with an individual's first estimate to determine the expected second estimate. It uses the Weight of Advice to calculate how much an individual relies on social information versus their own initial judgment. The expected second estimate is a weighted average. It can be interpreted as a tendency toward a certain estimate.
+
+\hypertarget{psi-to-second-estimate}{%
+\subsection{Psi to Second Estimate}\label{psi-to-second-estimate}}
+
+The model generates second estimates by adding random noise to the expected estimate (Psi). Specifically, it uses a truncated normal distribution centered around the expected second estimate with a standard deviation of 1. This creates a little bit of variability in individual responses while maintaining the central tendency determined by the Psi function.
+
+\hypertarget{gfe}{%
+\subsection{GFE}\label{gfe}}
+
+All realized first estimates of the group.
+
+\hypertarget{gse}{%
+\subsection{GSE}\label{gse}}
+
+All realized second estimates of the group.
+
+\hypertarget{acc}{%
+\subsection{ACC}\label{acc}}
+
+Measures both individual and group accuracy as absolute distances from the true value.
+
+\hypertarget{formal-model-evaluation}{%
+\section{Formal Model Evaluation}\label{formal-model-evaluation}}
+
+To evaluate our model's predictions, we conducted simulations examining key phenomena: accuracy improvement through social influence, potency of Wisdom of Crowds (WOC) effects, and egocentric discounting. We used a truncated normal distribution for prior knowledge (mean=0.5, SD=0.15) across all simulations, with 100 individuals and 100 trials per condition.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Group Distance}: The average absolute error of the group estimate (\textbar group mean - 100\textbar) across all trials
+\item
+  \textbf{Individual Distance}: The average absolute error made by individuals (averaging \textbar individual estimate - 100\textbar{} for each person)
+\item
+  \textbf{WOC Benefit}: The advantage gained by using the group's judgment over individual judgments (Individual Distance - Group Distance)
+\item
+  \textbf{\% WOC Benefit}: What percentage of individual error is eliminated through aggregation
+\end{itemize}
+
+\begin{table}
+
+\caption{\label{tab:comparison-table}Comparison of Normal vs. Dunning-Kruger Results}
+\centering
+\begin{tabular}[t]{lrr}
+\toprule
+Metric & Normal & DK\\
+\midrule
+Group Distance (First) & 4.87 & 4.94\\
+Group Distance (Second) & 4.59 & 4.67\\
+Individual Distance (First) & 41.49 & 41.02\\
+Individual Distance (Second) & 14.22 & 22.40\\
+WOC Benefit (First) & 36.62 & 36.08\\
+\addlinespace
+WOC Benefit (Second) & 9.63 & 17.73\\
+WOC Benefit Change & -26.99 & -18.35\\
+\% WOC Benefit (First) & 88.18 & 87.94\\
+\% WOC Benefit (Second) & 68.91 & 79.34\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\hypertarget{weight-of-advice-1}{%
+\subsection{Weight of Advice}\label{weight-of-advice-1}}
+
+Our results indicate that our basic model, with a direct mapping of PK to CONF, results in a WOA of 0.58, higher than the optimal 0.5. Interestingly, our revised mapping based on the initial paper on the Dunning-Kruger effect replicates the tendency for egocentric discounting, with the same WOA found by (Bailey et al., 2023) at 0.39.
+
+\begin{figure}[H]
+\includegraphics[width=7in]{photos/weight_on_advice} \caption{ }\label{fig:unnamed-chunk-5}
+\end{figure}
+
+\hypertarget{do-groups-become-more-accurate-after-social-influence}{%
+\subsection{Do groups become more accurate after social influence?}\label{do-groups-become-more-accurate-after-social-influence}}
+
+Social influence does not improve the already accurate group mean, the averages of first and second estimates are extremely close. Our results do show that both simple and Dunning-Kruger confidence calculations lead to individual accuracy improvements, with the Dunning-Kruger effect significantly reducing benefits from social influence. Additionally, individual estimates always improve through social influence across all simulated trials.
+
+\begin{figure}[H]
+\includegraphics[width=7in]{photos/accuracy_improvement} \caption{ }\label{fig:unnamed-chunk-6}
+\end{figure}
+
+\hypertarget{does-woc-potency-decrease-after-reception-of-social-information}{%
+\subsection{Does WOC potency decrease after reception of social information?}\label{does-woc-potency-decrease-after-reception-of-social-information}}
+
+Yes, the benefits of the Wisdom of Crowds decrease after social information exchange in both simple and Dunning-Kruger confidence models. This reduction occurs because social influence decreases estimate diversity, weakening error cancellation effects while simultaneously improving individual accuracy. The fact that we see more of a benefit of WOC in the Dunning-Kruger model is explained by the greater diversity preservation that occurs when some individuals (overconfident novices) resist social influence while others (underconfident experts) are influenced more. This heterogeneity in advice integration partially preserves the diversity necessary for error cancellation.
+
+\begin{figure}[H]
+\includegraphics[width=7in]{photos/woc_effect} \caption{ }\label{fig:unnamed-chunk-7}
+\end{figure}
+
+\hypertarget{reflection}{%
+\section{Reflection}\label{reflection}}
+
+Even though the literature already had a high degree of formalization, it was still challenging to extract out theoretical elements. We faced the problem of not being clear enough on the phenomenon we wanted to model, whether it was on the individual or on the group level. It would have been simpler to just look at the work of Bailey et al. (2023) and model only the mechanisms behind shifting toward advice, without concerning ourselves with group level accuracy and Wisdom of Crowds. This made our model and our research objective significantly more complex. Nonetheless, it is still rewarding to now have a more comprehensive model and also to be able to find the same egocentric discounting factor in our simulated data, with the Dunning-Kruger effect implemented.
+
+It was very unexpected just how many tiny decisions go into formalizing a theory, how many additional assumptions need to be agreed upon and how these seemingly small decisions can lead to vastly different outcomes. The fact that formalization feels so overwhelming also goes to show how real-world studies have immense degrees of freedom, which can easily lead to different results, depending on methods, frameworks and measures used. We also found different effects in the literature, for example the reactance effect of high distance, which was not found by all papers surveyed.
+
+Our group discussed a lot about how to properly integrate distance, confidence and in the beginning even other factors into a weight of advice calculation. It was challenging to find functions in this multi-dimensional space, which fit all the criteria and which everyone was happy with. Even though the VAST Model was helpful initially as a tool to organize our thinking, we found it more and more limiting as time went on. At times we stopped thinking about the actual phenomenon and just treated the VAST framework as a ground truth, which artificially limited our creativity and ability to connect the dots. All things considered though, formalizing a complex phenomenon like this has been a challenging but also very enlightening endeavor.
+
+\newpage
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-baileyMetaanalysisWeightAdvice2023}{}}%
+Bailey, P. E., Leon, T., Ebner, N. C., Moustafa, A. A., \& Weidemann, G. (2023). A meta-analysis of the weight of advice in decision-making. \emph{Current Psychology}, \emph{42}(28), 24516--24541. \url{https://doi.org/10.1007/s12144-022-03573-2}
+
+\leavevmode\vadjust pre{\hypertarget{ref-beckerNetworkDynamicsSocial2017}{}}%
+Becker, J., Brackbill, D., \& Centola, D. (2017). Network dynamics of social influence in the wisdom of crowds. \emph{Proceedings of the National Academy of Sciences}, \emph{114}(26). \url{https://doi.org/10.1073/pnas.1615978114}
+
+\leavevmode\vadjust pre{\hypertarget{ref-gurcayPowerSocialInfluence2015}{}}%
+Gürçay, B., Mellers, B. A., \& Baron, J. (2015). The {Power} of {Social Influence} on {Estimation Accuracy}. \emph{Journal of Behavioral Decision Making}, \emph{28}(3), 250--261. \url{https://doi.org/10.1002/bdm.1843}
+
+\leavevmode\vadjust pre{\hypertarget{ref-jaylesHowSocialInformation2017}{}}%
+Jayles, B., Kim, H., Escobedo, R., Cezera, S., Blanchet, A., Kameda, T., \ldots{} Theraulaz, G. (2017). How social information can improve estimation accuracy in human groups. \emph{Proceedings of the National Academy of Sciences}, \emph{114}(47), 12620--12625. \url{https://doi.org/10.1073/pnas.1703695114}
+
+\leavevmode\vadjust pre{\hypertarget{ref-krugerUnskilledUnawareIt1999}{}}%
+Kruger, J., \& Dunning, D. (1999). Unskilled and unaware of it: How difficulties in recognizing one's own incompetence lead to inflated self-assessments. \emph{Journal of Personality and Social Psychology}, \emph{77}(6), 1121--1134. \url{https://doi.org/10.1037//0022-3514.77.6.1121}
+
+\leavevmode\vadjust pre{\hypertarget{ref-lorenzHowSocialInfluence2011}{}}%
+Lorenz, J., Rauhut, H., Schweitzer, F., \& Helbing, D. (2011). How social influence can undermine the wisdom of crowd effect. \emph{Proceedings of the National Academy of Sciences}, \emph{108}(22), 9020--9025. \url{https://doi.org/10.1073/pnas.1008636108}
+
+\leavevmode\vadjust pre{\hypertarget{ref-raderAdviceFormSocial2017}{}}%
+Rader, C. A., Larrick, R. P., \& Soll, J. B. (2017). Advice as a form of social influence: {Informational} motives and the consequences for accuracy. \emph{Social and Personality Psychology Compass}, \emph{11}(8), e12329. \url{https://doi.org/10.1111/spc3.12329}
+
+\leavevmode\vadjust pre{\hypertarget{ref-sniezekCueingCognitiveConflict1995}{}}%
+Sniezek, J. A., \& Buckley, T. (1995). Cueing and {Cognitive Conflict} in {Judge-Advisor Decision Making}. \emph{Organizational Behavior and Human Decision Processes}, \emph{62}(2), 159--174. \url{https://doi.org/10.1006/obhd.1995.1040}
+
+\leavevmode\vadjust pre{\hypertarget{ref-surowieckiWisdomCrowdsWhy2004}{}}%
+Surowiecki, J. (2004). \emph{The wisdom of crowds: {Why} the many are smarter than the few and how collective wisdom shapes business, economies, societies, and nations} (pp. xxi, 296). New York, NY, US: Doubleday \& Co.
+
+\end{CSLReferences}
+
+\includepdf[pages=-,pagecommand={\section*{Appendix A}}]{Final Construct Source 23.03.25.pdf}
+
+\includepdf[pages=-,pagecommand={\section*{Appendix B}}]{Variable Table.pdf}
+
+
+\end{document}

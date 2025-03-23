@@ -250,7 +250,7 @@ psi <- function(first_estimate, social_info, confidence) {
 dIndividualSecondEstimate <- function(first_estimate, social_info, confidence) {
   # Returns the second estimate after applying the Psi function and random noise
   expected_second_estimate <- psi(first_estimate, social_info, confidence)
-  second_estimate <- rnorm(1, mean = expected_second_estimate, sd = 1)
+    second_estimate <- truncnorm::rtruncnorm(1, a = 0, b = Inf, mean = expected_second_estimate, sd = 1)
   return(second_estimate)
 }
 
